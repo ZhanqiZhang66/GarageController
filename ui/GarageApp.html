@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title>login</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+
+<body>
+  <!--**********************************login**********************************-->
+  <div id="login">
+    <h1>Login</h1>
+    <h4>IGarage</h4>
+    <label> User Name:
+      <input type="text" placeholder="Enter Username" name="username" />
+    </label>
+    <br />
+    <label>Password:
+      <input type="password" placeholder="Enter Password" name="password" />
+    </label>
+    <br />
+    <button onclick="homeButton()"> Login</button>
+    <button onclick="signUpButton()">Sign Up </button>
+  </div>
+  <div id="sign-up" hidden="hidden">
+    <h1>Sign up here</h1>
+    <h4>IGarage</h4>
+    <label> User Name:
+      <input type="text" placeholder="Enter Username" name="username" required />
+    </label>
+    <br />
+    <label>Password:
+      <input type="password" placeholder="Enter Password" name="password" required />
+    </label>
+    <br />
+    <label>Re-Enter Password:
+      <input type="password" placeholder="Repeat Password" name="repeat-passward" required />
+    </label>
+    <br />
+    <button onclick="homeButton()"> Sign Up</button>
+    <button onclick="logInButton()"> Already have an account </button>
+  </div>
+  <!--*******************************home*******************************************-->
+  <div id="home" hidden="hidden">
+    <h4>Status</h4>
+    <fieldset>
+    <legend>Garage Door</legend>
+    <label id="onOffSwitchLabel"  for="onOffSwitch">
+        <button class="btn" id="onOffSwitch" onclick="DoorOnOffButtonClicked()" >CLOSED</button>
+    </label>
+    </fieldset>
+    <fieldset>
+    <legend>Garage Light</legend>
+    <label>
+      <button class="btn" id="lightOnOffSwitch" >OFF</button>
+    </label>
+    </fieldset>
+    <button onclick="logInButton()">  Log Out </button>
+    <button onclick="advanceControlButton()"> Advanced Control </button>
+  </div>
+  <!--***********************************Advanced Control************************************-->
+  <div id="advance-control" hidden="hidden">
+    <h4>Status</h4>
+    <fieldset>
+    <legend>Garage Door</legend>
+    <label>Auto Close
+    </label>
+    <label class="switch" id="autoOffSwitchLabel" for="autoOffSwitch">
+      <input class="switch-input" type="checkbox"  id="autoOffSwitch" onclick="DoorAutoCloseButtonClicked()" />
+      <span class="switch-label" data-on="On" data-off="Off"></span>
+      <span class="switch-handle"></span>
+    </label>
+    <label>Auto Close Timer
+    </label>
+    <div class="slidecontainer" id="autoOffTimeSlider">
+      <input type="range" min="5" max="60" value="5" class="slider" id="autoCloseRange">
+      <p>Time: <span id="autoCloseTimerText"></span></p>
+    </div>
+    </fieldset>
+    <fieldset>
+    <legend>Garage Light</legend>
+    <br />
+    <label >Auto Light Off
+    </label>
+    <div class="slidecontainer" id="lightautoOffTimeSlider">
+      <input type="range" min="1" max="60" value="1" class="slider" id="autoLightRange">
+      <p>Time: <span id="lightAutoCloseTimerText"></span></p>
+    </div>
+    <label>Brightness
+    </label>
+    <div class="slidecontainer" id="brightness" >
+      <input type="range" min="20" max="100" value="5" class="slider" id="brightnessRange">
+      <p>Brightness: <span id="brightnessSliderText"></span></p>
+    </div>
+    </fieldset>
+    <button onclick="logInButton()">  Log Out </button>
+    <button onclick="homeButton()"> Status Control </button>
+  </div>
+  <script src="Garage.js">
+  </script>
+  <script src="GarageApp.js">
+  </script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/particle-api-js@8/dist/particle.min.js">
+</script>
+
+</body>
+
+</html>
