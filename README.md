@@ -1,60 +1,52 @@
-# Assignment 5 Questions
+#Garage Controller with Remote Control
+##Genaral:
+###Door buttons
+-Should start the door’s motion if it’s halted
+-Should stop the door’s motion if it’s moving
+###Light buttons
+-Should turn the light on if it’s off
+-Should turn the light off if it’s on
+###All UIs (OLED and webpage) should provide a clear indication of state:
+-Door opening
+-Door closing
+-Door stopped / fault (this can be shown in detail or all types of errors and faults can be depicted with a single message)
+-Light Status (on/off)
 
-Please answer the following questions.  There are no "wrong" answers, but:
-  * Some will help us understand your work habits,
-  * Some will help us understand your work, and
-  * Some may help you identify deficiencies in your work.
+##JavaScript/UI Requirements (Variation on Assignment 4 Requirements):
+###Data Communications Design:
+-The data communication features supported by Particle (e.g., variables, function calls, and event streams), should be used in appropriate ways.
+-Unnecessary polling of information from a remote system could use excessive data when this work is converted to a mobile app, so it is not allowed. (I.e., don’t use a JavaScript timer to repeatedly call functions on the Photon). This can usually be avoided by using a publish-subscribe model (Particle’s Event Streams)
+##Light Control:
+-Users should be able to turn the lights on/off from the UI
+-Users should be able to set the light’s maximum brightness from the UI
+-When the light is “on” it will be on at this maximum brightness. For example, if the “maximum” is set to 50% the light will never be on at full power. WHen the light comes on (either due to door motion or a light button) it will be on at this partial brightness. When it fades to off, it will start from this value.
+-The “minimum” value of maximum brightness should still be reasonably visible. That is, the users will only be allowed to pick from a range of values that are clearly “on”, but that have varying brightness.
+-Users should be able to configure the light auto-off time from the UI
+-Use 1s to 60s to simplify testing and demos
 
-***Q1.0 Can you describe any errors or bugs that you found particularly time consuming or challenging?***
+##Controller Hardware Requirements (Additions to Assignment 4 Requirements):
+###Light Behavior:
+-The light should be at the configured “maximum” brightness whenever the door is moving. As soon as the door stops the light’s auto-off timer should start.
+-When the light is turned on, it should start at the configured “maximum” brightness.
+-The light will fade off over 5s after the auto-off time has elapsed.
+-The light should automatically fade off after the “auto-off” time regardless of how it was turned on. (There is no “enable” for the light’s auto-off)
+-If the light is on when a light button is hit, the light should turn off immediately (even if the door is in motion or if the light is fading off).
+-If the light is off when a light button is hit, the light should turn on and the auto-off timer should start. Example: If the “auto-off” time is 4 seconds and light is turned on (no door motion), the light should stay on at the configured “maximum” brightness for 4 seconds and then fade off over the remaining 5 seconds.
+-Fades always start at the configured “maximum” brightness and proceed to a complete off.
+-Toggling it while fading will make it turn off immediately.
+-Toggling it while it is off will make it turn on immediately and reset/restart the auto-off timer.
+-Changing the maximum brightness while the light is on should immediately change the brightness.
+-Changing the maximum brightness while the light is fading can be done at your discretion (the maximum setting should be changed, but it doesn’t have to impact the values used for the current fading)
 
-We were confused about when should we publish the data and we spent a lot of time trying to figure out how to apply the line of data.
-
-***Q1.1 If applicable, were there any special programming techniques or tools you used to assist you with the bugs/challenges in the previous question?***
-
-The Serial Monitor and console.log are good friends of debugging. When one of us was stuck on a problem we will discuss and usually could find the reasons.
-
-***Q1.2 Errors/bugs are unavoidable, but in hindsight are there any techniques/approaches that you could have used (but didn't) that would have helped you with the bugs/challenges?***
-
-Should have made the previous assignment better since this assignment is built on it.
-
-***Q1.3 Were there any significant misunderstandings (i.e., not a typo) that deterred your progress on this?  If so, can you describe them?***
-
-publish. When we publish too frequently(the same data twice), the data is gone?!
-
-***Q2 Do you have any suggestions that would help future students with this assignment?***
-
-Start Early.
-
-***Q3.0 If you worked in a group, did you use pair programming?***
-
-Yes.
-
-***3.1 If you didn't use pair programming, skip to question 3.2.  If you did, in the following table give each person's name and an estimate of the percent of total time they spent as a "driver":***
-
-| Name  |  % of Time as Driver |
-|:------|:---------------------|
-|  Victoria Zhang  | 60%                  |
-|  Xingjue Liao | 40%                  |
-
-***Q3.2 If you used pair programming, skip this question.  If you didn't, explain how you divided up the work and how each person contributed:***
-
-***Q4. Assignment Checklist.  Below is a Markdown style Task List. The Tasks correspond to many of the major features of the assignment. Filling in the checklist will help ensure that you have completed many of the major elements of the assignment (although it does not cover every point possible)***
-
-# Assignment 5 Task List
-
-Add the x's to each task/component you've completed:
-
-- [x] Reviewed all requirements of previous Assignments
-- [ ] Included an up-to-date Finite State Machine diagram
-- [ ] Included an up-to-date wiring diagrams of all circuits (Controller and Remote)
-- [x] Included a complete `GarageHardwareProxy.cpp`
-- [x] Included a complete `GarageController.ino`, with cloud-based functionality
-- [x] Included a complete `GarageRemote.ino`, with cloud-based functionality
-- [x] Verify that `GarageRemote.ino` will function independent of the UI
-- [x] Verify that `Garage.js` is not directly interacting with the UI
-- [x] Verify that `GarageApp.js` is controlling the UI and not directly interacting
-- [x] Thoroughly tested all UI functionality and features (basic open/close; auto-close support; showing state, including faults; light settings and behavior; etc.)
-- [x] Thoroughly test all remote functionality (displaying states, door control, light control)
-- [x] Completed the `README.md`
-- [x] Committed your code and pushed it to GitHub
-- [x] Verified your final code is on GitHub
+##Remote Hardware & Implementation Requirements :
+-Uses a Photon as the primary processor (this assignment uses both Photons)
+-Buttons should not appear to bounce. The approach you use for debouncing is at your discretion.
+-Includes an OLED screen that shows the garage state. It should clearly show:
+  -Door state
+  -Light state
+-Includes two buttons (or wires to simulate buttons):
+ -One to toggle the door state
+ -One to toggle the light state
+-The Remote should not interact with UIs in any way. It should be able to interact with the controller controller even if the UI isn’t opened/running.
+-When the remote starts it should somehow request state information (much like the webpage UI should).
+-Like the webpage UI, it should not allow the buttons to impact state until it receives valid state information.
